@@ -3,6 +3,7 @@ package com.aiyu.news.ui.fragment.home
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -11,7 +12,7 @@ import com.aiyu.news.databinding.RowNewsBinding
 import com.aiyu.news.ui.utils.loadImage
 import com.bumptech.glide.Glide
 
-class HomeAdapter : ListAdapter<Article, HomeAdapter.HomeAdapterViewHolder>(DiffUtilArticle()) {
+class HomeAdapter : PagingDataAdapter<Article, HomeAdapter.HomeAdapterViewHolder>(DiffUtilArticle()) {
 
     class HomeAdapterViewHolder(
         private val binding: RowNewsBinding
@@ -41,7 +42,7 @@ class HomeAdapter : ListAdapter<Article, HomeAdapter.HomeAdapterViewHolder>(Diff
         )
 
     override fun onBindViewHolder(holder: HomeAdapterViewHolder, position: Int) {
-        holder.bind(getItem(position))
+        getItem(position)?.let { holder.bind(it) }
     }
 }
 

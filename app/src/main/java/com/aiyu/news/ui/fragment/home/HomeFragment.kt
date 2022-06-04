@@ -24,21 +24,16 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         val homeAdapter = HomeAdapter()
         binding.apply {
             showHeadings.apply {
-                adapter = homeAdapter
+                adapter = homeAdapter.withLoadStateHeaderAndFooter(
+                    header = NewLoadStateAdapter{homeAdapter.retry()},
+                    footer = NewLoadStateAdapter{homeAdapter.retry()}
+                )
                 layoutManager = LinearLayoutManager(requireContext())
             }
         }
         lifecycleScope.launchWhenCreated {
-            viewModel.getTopHeading("in")
-            viewModel.breakingNews.observe(viewLifecycleOwner) { response ->
-                when (response) {
-                    is Resource.Error -> {
-                        Toast.makeText(requireContext(), "${response.message}", Toast.LENGTH_SHORT)
-                            .show()
-                    }
-                    is Resource.Loading -> {}
-                    is Resource.Success -> homeAdapter.submitList(response.data?.articles)
-                }
+            viewModel.topHeading.observe(viewLifecycleOwner) {
+                homeAdapter.submitData(viewLifecycleOwner.lifecycle, it)
             }
         }
     }

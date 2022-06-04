@@ -51,4 +51,5 @@ dependencies {
 
     implementation "com.squareup.retrofit2:retrofit:$retrofitVersion"
     implementation "com.squareup.retrofit2:converter-gson:$retrofitVersion"
+    implementation("androidx.paging:paging-runtime:$paging_version")
 }

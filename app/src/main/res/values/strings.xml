@@ -4,4 +4,7 @@
     <string name="share">Share</string>
     <string name="favorite">Favorite</string>
     <string name="search">Search</string>
+    <string name="not_loaded">Result could not be loaded</string>
+    <string name="retry">Retry</string>
+    <string name="searchForNews">Search For News</string>
 </resources>

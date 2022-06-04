@@ -14,15 +14,17 @@ interface NewsApi {
     suspend fun getHeadLines(
         @Query("country") countryCode: String = "in",
         @Query("page") pageNumber: Int = 1,
+        @Query("pageSize") pageSize: Int = 20,
         @Query("apiKey")
         apiKey: String = API_KEY
-    ): Response<NewsResponse>
+    ): NewsResponse
 
     @GET("v2/everything")
     suspend fun getSearchForNews(
         @Query("q") query: String,
         @Query("page") pageNumber: Int = 1,
+        @Query("pageSize") pageSize: Int = 20,
         @Query("apiKey")
         apiKey: String = API_KEY
-    ): Response<NewsResponse>
+    ): NewsResponse
 }

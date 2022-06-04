@@ -3,6 +3,7 @@ package com.aiyu.news.ui.main_activity
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.viewbinding.library.activity.viewBinding
+import androidx.core.view.isVisible
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
@@ -36,7 +37,18 @@ class MainActivity : AppCompatActivity() {
                     R.id.favoriteFragment
                 )
             )
+
+            collapsingToolbar.setupWithNavController(toolbar, navController, appBarConfiguration)
             setupActionBarWithNavController(navController, appBarConfiguration)
+        }
+        onDestinationChange()
+    }
+
+    private fun onDestinationChange() {
+        navController.addOnDestinationChangedListener { _, destination, _ ->
+            when (destination.id) {
+
+            }
         }
     }
 

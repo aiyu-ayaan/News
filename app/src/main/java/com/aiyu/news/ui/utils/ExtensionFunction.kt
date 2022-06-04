@@ -23,7 +23,7 @@ fun String?.loadImage(
     Glide.with(parentView)
         .load(this ?: "")
         .fitCenter()
-        .error(R.drawable.ic_running_error)
+        .error(R.drawable.no_image)
         .listener(object : RequestListener<Drawable> {
             override fun onLoadFailed(
                 e: GlideException?,
