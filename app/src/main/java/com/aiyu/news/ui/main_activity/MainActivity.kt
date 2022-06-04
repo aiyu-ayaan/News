@@ -6,6 +6,9 @@ import android.viewbinding.library.activity.viewBinding
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.ui.AppBarConfiguration
+import androidx.navigation.ui.setupActionBarWithNavController
+import androidx.navigation.ui.setupWithNavController
 import com.aiyu.news.R
 import com.aiyu.news.databinding.ActivityMainBinding
 import dagger.hilt.android.AndroidEntryPoint
@@ -15,6 +18,7 @@ class MainActivity : AppCompatActivity() {
 
     private val binding: ActivityMainBinding by viewBinding()
     private lateinit var navController: NavController
+    private lateinit var appBarConfiguration: AppBarConfiguration
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
@@ -24,7 +28,15 @@ class MainActivity : AppCompatActivity() {
             val navHostFragment =
                 supportFragmentManager.findFragmentById(R.id.fragmentContainerView) as NavHostFragment
             navController = navHostFragment.findNavController()
-
+            bottomNavigation.setupWithNavController(navController)
+            appBarConfiguration = AppBarConfiguration(
+                setOf(
+                    R.id.homeFragment,
+                    R.id.searchFragment,
+                    R.id.favoriteFragment
+                )
+            )
+            setupActionBarWithNavController(navController, appBarConfiguration)
         }
     }
 

@@ -6,9 +6,10 @@
     android:background="?attr/colorSurface"
     tools:context="com.aiyu.news.ui.fragment.home.HomeFragment">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:text="Home" />
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/show_headings"
+        android:layout_width="match_parent"
+        android:clipToPadding="false"
+        android:paddingBottom="@dimen/grid_5"
+        android:layout_height="match_parent" />
 </RelativeLayout>
