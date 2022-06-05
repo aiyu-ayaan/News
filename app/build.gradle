@@ -61,6 +61,7 @@ dependencies {
 
 //    Hilt
     implementation("com.google.dagger:hilt-android:$hilt_version")
+    implementation 'androidx.browser:browser:1.4.0'
     kapt("com.google.dagger:hilt-android-compiler:$hilt_version")
     implementation "androidx.webkit:webkit:$webKit_version"
 

@@ -5,22 +5,32 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.aiyu.core.models.Article
 import com.aiyu.news.databinding.RowNewsBinding
 import com.aiyu.news.ui.utils.loadImage
-import com.bumptech.glide.Glide
 
-class HomeAdapter : PagingDataAdapter<Article, HomeAdapter.HomeAdapterViewHolder>(DiffUtilArticle()) {
+class HomeAdapter(
+    private val listener: (Article) -> Unit
+) : PagingDataAdapter<Article, HomeAdapter.HomeAdapterViewHolder>(DiffUtilArticle()) {
 
-    class HomeAdapterViewHolder(
+    inner class HomeAdapterViewHolder(
         private val binding: RowNewsBinding
     ) : RecyclerView.ViewHolder(binding.root) {
 
+        init {
+            binding.root.setOnClickListener {
+                if (absoluteAdapterPosition != RecyclerView.NO_POSITION)
+                    getItem(absoluteAdapterPosition)?.let {
+                        listener.invoke(it)
+                    }
+            }
+        }
+
         fun bind(article: Article) = binding.apply {
+            binding.root.transitionName = article.title
             textViewTextTitle.text = article.title
-            textViewSource.text = article.source.name
+            textViewSource.text = article.source?.name
             article.urlToImage.loadImage(
                 itemView,
                 imageViewTitleImage,

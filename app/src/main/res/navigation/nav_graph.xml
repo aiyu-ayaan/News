@@ -20,4 +20,5 @@
         android:name="com.aiyu.news.ui.fragment.search.SearchFragment"
         android:label="@string/search"
         tools:layout="@layout/fragment_search" />
+
 </navigation>

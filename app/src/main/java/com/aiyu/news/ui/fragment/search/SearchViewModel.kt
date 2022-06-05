@@ -14,7 +14,7 @@ import javax.inject.Inject
 class SearchViewModel @Inject constructor(
     private val repository: NewsRepository
 ) : ViewModel() {
-    val query = MutableStateFlow("")
+    val query = MutableStateFlow("corona")
 
     val searchResult = query.flatMapLatest {
         repository.getSearchResult(it).cachedIn(viewModelScope).asFlow()
