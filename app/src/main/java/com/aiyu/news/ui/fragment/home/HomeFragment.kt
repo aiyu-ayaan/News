@@ -16,6 +16,7 @@ import com.aiyu.core.models.Article
 import com.aiyu.news.R
 import com.aiyu.news.databinding.FragmentHomeBinding
 import com.aiyu.news.ui.utils.openCustomChromeTab
+import com.aiyu.news.ui.utils.openShareDeepLink
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -28,9 +29,13 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         super.onViewCreated(view, savedInstanceState)
         postponeEnterTransition()
         view.doOnPreDraw { startPostponedEnterTransition() }
-        val homeAdapter = HomeAdapter { article ->
+        val homeAdapter = HomeAdapter({ article ->
             navigateToDescription(article)
-        }
+        }, { article ->
+            addArticle(article)
+        }, { title, url ->
+            activity?.openShareDeepLink(title, url)
+        })
         binding.apply {
             showHeadings.apply {
                 adapter = homeAdapter.withLoadStateHeaderAndFooter(
@@ -56,6 +61,11 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                 homeAdapter.submitData(viewLifecycleOwner.lifecycle, it)
             }
         }
+    }
+
+    private fun addArticle(article: Article) {
+        viewModel.addArticle(article)
+        Toast.makeText(requireContext(), "Done", Toast.LENGTH_SHORT).show()
     }
 
     private fun navigateToDescription(article: Article) {

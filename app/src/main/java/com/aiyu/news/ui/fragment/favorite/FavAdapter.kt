@@ -1,25 +1,34 @@
-package com.aiyu.news.ui.fragment.home
+package com.aiyu.news.ui.fragment.favorite
 
 
 import android.annotation.SuppressLint
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.paging.PagingDataAdapter
-import androidx.recyclerview.widget.DiffUtil
+import androidx.cardview.widget.CardView
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.aiyu.core.models.Article
 import com.aiyu.news.R
 import com.aiyu.news.databinding.RowNewsBinding
+import com.aiyu.news.ui.fragment.home.DiffUtilArticle
 import com.aiyu.news.ui.utils.convertDateToTime
 import com.aiyu.news.ui.utils.loadImage
 import java.text.SimpleDateFormat
 
-class HomeAdapter(
+class FavAdapter(
     private val listener: (Article) -> Unit,
-    private val favListener: (Article) -> Unit,
-    private val shareClick: (String, String) -> Unit
-) : PagingDataAdapter<Article, HomeAdapter.HomeAdapterViewHolder>(DiffUtilArticle()) {
+    private val shareClick: (String, String) -> Unit,
+    private val longClick: () -> Unit,
+    private val onMenuActive: (Article, CardView) -> Unit
+) : ListAdapter<Article, FavAdapter.HomeAdapterViewHolder>(DiffUtilArticle()) {
+
+    private var isMenuActive: Boolean = false
+
+    fun setIsMenuActive(isMenuActive: Boolean) {
+        this.isMenuActive = isMenuActive
+    }
 
     inner class HomeAdapterViewHolder(
         private val binding: RowNewsBinding
@@ -29,15 +38,22 @@ class HomeAdapter(
             binding.root.setOnClickListener {
                 if (absoluteAdapterPosition != RecyclerView.NO_POSITION)
                     getItem(absoluteAdapterPosition)?.let {
-                        listener.invoke(it)
+                        if (isMenuActive) {
+                            onMenuActive.invoke(it, binding.root)
+
+                        } else {
+                            listener.invoke(it)
+                        }
                     }
             }
-
-            binding.imageButtonFav.setOnClickListener {
+            binding.root.setOnLongClickListener {
+                isMenuActive = true
                 if (absoluteAdapterPosition != RecyclerView.NO_POSITION)
                     getItem(absoluteAdapterPosition)?.let {
-                        favListener.invoke(it)
+                        longClick.invoke()
+                        onMenuActive.invoke(it, binding.root)
                     }
+                true
             }
             binding.imageButtonShare.setOnClickListener {
                 if (absoluteAdapterPosition != RecyclerView.NO_POSITION)
@@ -51,13 +67,14 @@ class HomeAdapter(
         fun bind(article: Article) = binding.apply {
             binding.root.transitionName = article.title
             textViewTextTitle.text = article.title
-            textViewSource.text = article.source?.name
+
             article.urlToImage.loadImage(
                 itemView,
                 imageViewTitleImage,
                 progressBarNews,
                 10
             )
+            imageButtonFav.setImageResource(R.drawable.ic_favorite_bottom_nav)
             try {
                 val date =
                     SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'").parse(article.publishedAt!!)
@@ -86,13 +103,4 @@ class HomeAdapter(
     override fun onBindViewHolder(holder: HomeAdapterViewHolder, position: Int) {
         getItem(position)?.let { holder.bind(it) }
     }
-}
-
-class DiffUtilArticle() : DiffUtil.ItemCallback<Article>() {
-    override fun areItemsTheSame(oldItem: Article, newItem: Article): Boolean =
-        oldItem == newItem
-
-    override fun areContentsTheSame(oldItem: Article, newItem: Article): Boolean =
-        oldItem == newItem
-
 }

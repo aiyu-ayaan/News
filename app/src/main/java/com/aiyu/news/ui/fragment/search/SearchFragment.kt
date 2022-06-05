@@ -19,6 +19,7 @@ import com.aiyu.news.databinding.FragmentSearchBinding
 import com.aiyu.news.ui.fragment.home.HomeAdapter
 import com.aiyu.news.ui.fragment.home.NewLoadStateAdapter
 import com.aiyu.news.ui.utils.openCustomChromeTab
+import com.aiyu.news.ui.utils.openShareDeepLink
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -30,9 +31,13 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
         super.onViewCreated(view, savedInstanceState)
         postponeEnterTransition()
         view.doOnPreDraw { startPostponedEnterTransition() }
-        val homeAdapter = HomeAdapter { article ->
+        val homeAdapter = HomeAdapter({ article ->
             navigateToDescription(article)
-        }
+        }, { article ->
+            addArticle(article)
+        }, { title, url ->
+            activity?.openShareDeepLink(title,url)
+        })
         binding.apply {
             showSearch.apply {
                 adapter = homeAdapter.withLoadStateHeaderAndFooter(
@@ -68,5 +73,10 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
 
     private fun navigateToDescription(article: Article) {
         context?.openCustomChromeTab(article.url!!)
+    }
+
+    private fun addArticle(article: Article) {
+        viewModel.addArticle(article)
+        Toast.makeText(requireContext(), "Done", Toast.LENGTH_SHORT).show()
     }
 }

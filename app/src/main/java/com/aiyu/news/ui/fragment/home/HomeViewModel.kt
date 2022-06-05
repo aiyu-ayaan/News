@@ -4,6 +4,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.cachedIn
+import com.aiyu.core.data.NewsDao
+import com.aiyu.core.models.Article
 import com.aiyu.core.models.NewsResponse
 import com.aiyu.core.repositories.NewsRepository
 import com.aiyu.core.utils.Resource
@@ -15,7 +17,12 @@ import javax.inject.Inject
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
-    private val newsRepository: NewsRepository
+    private val newsRepository: NewsRepository,
+    private val dao: NewsDao
 ) : ViewModel() {
     val topHeading = newsRepository.getTopHeadingResult("in").cachedIn(viewModelScope)
+
+    fun addArticle(article: Article) = viewModelScope.launch {
+        dao.insert(article)
+    }
 }

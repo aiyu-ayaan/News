@@ -9,4 +9,7 @@
     <string name="searchForNews">Search For News</string>
     <string name="image_news">Image Title</string>
     <string name="blank">" "</string>
+    <string name="delete">Delete</string>
+    <string name="delete_all">Delete All</string>
+    <string name="author_with_date">%s . %s</string>
 </resources>

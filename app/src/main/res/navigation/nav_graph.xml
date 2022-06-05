@@ -20,5 +20,23 @@
         android:name="com.aiyu.news.ui.fragment.search.SearchFragment"
         android:label="@string/search"
         tools:layout="@layout/fragment_search" />
+    <dialog
+        android:id="@+id/deleteSelectedDialog"
+        android:name="com.aiyu.news.ui.fragment.delete.DeleteSelectedDialog"
+        android:label="DeleteAllDialog">
+        <argument
+            android:name="articles"
+            app:argType="com.aiyu.core.models.Article[]" />
+    </dialog>
+    <action
+        android:id="@+id/action_global_deleteSelectedDialog"
+        app:destination="@id/deleteSelectedDialog" />
+    <dialog
+        android:id="@+id/deleteAllDialog"
+        android:name="com.aiyu.news.ui.fragment.delete.DeleteAllDialog"
+        android:label="DeleteAllDialog" />
+    <action
+        android:id="@+id/action_global_deleteAllDialog"
+        app:destination="@id/deleteAllDialog" />
 
 </navigation>

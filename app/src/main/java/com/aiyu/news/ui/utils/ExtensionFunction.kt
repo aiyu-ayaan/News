@@ -1,6 +1,9 @@
 package com.aiyu.news.ui.utils
 
+import android.annotation.SuppressLint
+import android.app.Activity
 import android.content.Context
+import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.Drawable
 import android.net.Uri
@@ -18,6 +21,8 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.bumptech.glide.request.RequestListener
 import com.google.android.material.color.MaterialColors
+import java.text.SimpleDateFormat
+import java.util.*
 
 fun String?.loadImage(
     parentView: View,
@@ -73,3 +78,23 @@ fun Context.openCustomChromeTab(link: String) = this.run {
     customTabIntent.intent.`package` = "com.android.chrome"
     customTabIntent.launchUrl(this, Uri.parse(link))
 }
+
+fun Activity.openShareDeepLink(title: String, link: String) =
+    this.startActivity(Intent.createChooser(Intent().apply {
+        action = Intent.ACTION_SEND
+        putExtra(
+            Intent.EXTRA_TEXT, """
+            $title .
+            Link: $link
+        """.trimIndent()
+        )
+        type = "text/plain"
+        putExtra(Intent.EXTRA_TITLE, title)
+
+        flags = Intent.FLAG_GRANT_READ_URI_PERMISSION
+    }, null))
+
+
+@SuppressLint("SimpleDateFormat")
+fun Date.convertDateToTime(): String =
+    SimpleDateFormat("dd/MM/yyyy").format(this)
