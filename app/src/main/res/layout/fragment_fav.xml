@@ -2,12 +2,19 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:padding="@dimen/grid_1"
     android:layout_height="match_parent"
+    android:padding="@dimen/grid_1"
     tools:context="com.aiyu.news.ui.fragment.favorite.FavoriteFragment">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/show_fav"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
+
+    <ImageView
+        android:id="@+id/image_view_empty"
+        android:layout_width="@dimen/image_size"
+        android:layout_height="@dimen/image_size"
+        android:layout_centerInParent="true"
+        android:src="@drawable/ic_empty" />
 </RelativeLayout>

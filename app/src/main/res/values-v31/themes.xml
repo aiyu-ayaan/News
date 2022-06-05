@@ -26,10 +26,10 @@
         <item name="actionBarTheme">@style/ThemeOverlay.Material3.Dark.ActionBar</item>
     </style>
 
-<!--    <style name="Theme.customSplash" parent="Theme.SplashScreen">-->
-<!--        <item name="android:windowSplashScreenBackground">?attr/bottomBar</item>-->
-<!--        <item name="android:windowSplashScreenAnimationDuration">800</item>-->
-<!--        <item name="windowSplashScreenAnimatedIcon">@drawable/splash_screen_anim</item>-->
-<!--        <item name="postSplashScreenTheme">@style/Theme.BITApp</item>-->
-<!--    </style>-->
+    <style name="Theme.customSplash" parent="Theme.SplashScreen">
+        <item name="backgroundColor">@color/splashScreen</item>
+        <item name="windowSplashScreenAnimatedIcon">@mipmap/ic_launcher_round</item>
+        <item name="postSplashScreenTheme">@style/Theme.News</item>
+    </style>
+
 </resources>

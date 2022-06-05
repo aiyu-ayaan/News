@@ -2,7 +2,6 @@ package com.aiyu.news.ui.fragment.favorite
 
 
 import android.annotation.SuppressLint
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.Toast
@@ -21,7 +20,8 @@ class FavAdapter(
     private val listener: (Article) -> Unit,
     private val shareClick: (String, String) -> Unit,
     private val longClick: () -> Unit,
-    private val onMenuActive: (Article, CardView) -> Unit
+    private val onMenuActive: (Article, CardView) -> Unit,
+    private val onFavClick: (Article) -> Unit
 ) : ListAdapter<Article, FavAdapter.HomeAdapterViewHolder>(DiffUtilArticle()) {
 
     private var isMenuActive: Boolean = false
@@ -59,6 +59,12 @@ class FavAdapter(
                 if (absoluteAdapterPosition != RecyclerView.NO_POSITION)
                     getItem(absoluteAdapterPosition)?.let {
                         shareClick.invoke(it.title, it.url.toString())
+                    }
+            }
+            binding.imageButtonFav.setOnClickListener {
+                if (absoluteAdapterPosition != RecyclerView.NO_POSITION)
+                    getItem(absoluteAdapterPosition)?.let {
+                        onFavClick.invoke(it)
                     }
             }
         }

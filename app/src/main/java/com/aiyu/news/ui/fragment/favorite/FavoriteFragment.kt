@@ -10,6 +10,7 @@ import androidx.annotation.AttrRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.view.ActionMode
 import androidx.cardview.widget.CardView
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.MutableLiveData
@@ -44,6 +45,8 @@ class FavoriteFragment : Fragment(R.layout.fragment_fav) {
             setUpActionBar()
         }, { it, view ->
             addValueInList(it, view)
+        }, { article ->
+            deleteFav(article)
         })
         binding.apply {
             showFav.apply {
@@ -53,7 +56,12 @@ class FavoriteFragment : Fragment(R.layout.fragment_fav) {
         }
         viewModel.article.observe(viewLifecycleOwner) {
             favAdapter.submitList(it)
+            binding.imageViewEmpty.isVisible = it.isEmpty()
         }
+    }
+
+    private fun deleteFav(article: Article) {
+        viewModel.delete(article)
     }
 
     private fun addValueInList(article: Article, view: CardView) {

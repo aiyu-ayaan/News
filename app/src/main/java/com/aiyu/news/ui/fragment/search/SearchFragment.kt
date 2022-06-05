@@ -33,10 +33,10 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
         view.doOnPreDraw { startPostponedEnterTransition() }
         val homeAdapter = HomeAdapter({ article ->
             navigateToDescription(article)
-        }, { article ->
-            addArticle(article)
+        }, { article, isContain ->
+            addOrRemoveArticle(article, isContain)
         }, { title, url ->
-            activity?.openShareDeepLink(title,url)
+            activity?.openShareDeepLink(title, url)
         })
         binding.apply {
             showSearch.apply {
@@ -69,14 +69,22 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
                 homeAdapter.submitData(viewLifecycleOwner.lifecycle, it)
             }
         }
+        viewModel.favArticle.observe(viewLifecycleOwner) {
+            homeAdapter.setFavoritesList(it)
+        }
     }
 
     private fun navigateToDescription(article: Article) {
         context?.openCustomChromeTab(article.url!!)
     }
 
-    private fun addArticle(article: Article) {
-        viewModel.addArticle(article)
-        Toast.makeText(requireContext(), "Done", Toast.LENGTH_SHORT).show()
+    private fun addOrRemoveArticle(article: Article, isContain: Boolean) {
+        if (isContain) {
+            viewModel.removeArticle(article)
+            Toast.makeText(requireContext(), "Removed", Toast.LENGTH_SHORT).show()
+        } else {
+            viewModel.addArticle(article)
+            Toast.makeText(requireContext(), "Done", Toast.LENGTH_SHORT).show()
+        }
     }
 }

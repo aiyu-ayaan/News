@@ -17,9 +17,18 @@ import java.text.SimpleDateFormat
 
 class HomeAdapter(
     private val listener: (Article) -> Unit,
-    private val favListener: (Article) -> Unit,
+    private val favListener: (Article, Boolean) -> Unit,
     private val shareClick: (String, String) -> Unit
 ) : PagingDataAdapter<Article, HomeAdapter.HomeAdapterViewHolder>(DiffUtilArticle()) {
+
+
+    private var favoritesList: List<Article> = arrayListOf()
+
+    @SuppressLint("NotifyDataSetChanged")
+    fun setFavoritesList(list: List<Article>) {
+        this.favoritesList = list
+        notifyDataSetChanged()
+    }
 
     inner class HomeAdapterViewHolder(
         private val binding: RowNewsBinding
@@ -36,7 +45,7 @@ class HomeAdapter(
             binding.imageButtonFav.setOnClickListener {
                 if (absoluteAdapterPosition != RecyclerView.NO_POSITION)
                     getItem(absoluteAdapterPosition)?.let {
-                        favListener.invoke(it)
+                        favListener.invoke(it, favoritesList.contains(it))
                     }
             }
             binding.imageButtonShare.setOnClickListener {
@@ -58,6 +67,10 @@ class HomeAdapter(
                 progressBarNews,
                 10
             )
+            if (favoritesList.contains(article))
+                imageButtonFav.setImageResource(R.drawable.ic_favorite_bottom_nav)
+            else
+                imageButtonFav.setImageResource(R.drawable.ic_favorite)
             try {
                 val date =
                     SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'").parse(article.publishedAt!!)

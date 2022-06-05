@@ -31,8 +31,8 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         view.doOnPreDraw { startPostponedEnterTransition() }
         val homeAdapter = HomeAdapter({ article ->
             navigateToDescription(article)
-        }, { article ->
-            addArticle(article)
+        }, { article, isContain ->
+            addOrRemoveArticle(article, isContain)
         }, { title, url ->
             activity?.openShareDeepLink(title, url)
         })
@@ -61,11 +61,19 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                 homeAdapter.submitData(viewLifecycleOwner.lifecycle, it)
             }
         }
+        viewModel.favArticle.observe(viewLifecycleOwner) {
+            homeAdapter.setFavoritesList(it)
+        }
     }
 
-    private fun addArticle(article: Article) {
-        viewModel.addArticle(article)
-        Toast.makeText(requireContext(), "Done", Toast.LENGTH_SHORT).show()
+    private fun addOrRemoveArticle(article: Article, isContain: Boolean) {
+        if (isContain) {
+            viewModel.removeArticle(article)
+            Toast.makeText(requireContext(), "Removed", Toast.LENGTH_SHORT).show()
+        } else {
+            viewModel.addArticle(article)
+            Toast.makeText(requireContext(), "Done", Toast.LENGTH_SHORT).show()
+        }
     }
 
     private fun navigateToDescription(article: Article) {

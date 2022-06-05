@@ -24,4 +24,10 @@
         <item name="actionModeCloseDrawable">@drawable/ic_close</item>
         <item name="actionBarTheme">@style/ThemeOverlay.Material3.Dark.ActionBar</item>
     </style>
+
+    <style name="Theme.customSplash" parent="Theme.SplashScreen">
+        <item name="backgroundColor">@color/splashScreen</item>
+        <item name="windowSplashScreenAnimatedIcon">@mipmap/ic_launcher_round</item>
+        <item name="postSplashScreenTheme">@style/Theme.News</item>
+    </style>
 </resources>

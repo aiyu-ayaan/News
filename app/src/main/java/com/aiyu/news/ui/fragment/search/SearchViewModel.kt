@@ -27,4 +27,10 @@ class SearchViewModel @Inject constructor(
     fun addArticle(article: Article) = viewModelScope.launch {
         dao.insert(article)
     }
+
+    fun removeArticle(article: Article) = viewModelScope.launch {
+        dao.delete(article)
+    }
+
+    val favArticle = dao.getAllArticles()
 }
